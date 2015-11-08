@@ -1,43 +1,45 @@
 // select HTML elements and store them in variables
 var body = document.querySelector('body') // body element to listen for clicks
 var title = document.querySelector('.title') // title bar
-var tiles = Array.prototype.slice.call(document.querySelectorAll('.tile')) // monitor tiles for 'X' and 'O'
+var tiles = Array.from(document.querySelectorAll('.tile')) // monitor tiles for 'X' and 'O'
 var reset = document.querySelector('.reset') // reset button to reset the game
 // create variables for the tic tac toe game
 var player, moves, winner
 resetBoard()
 
-// Event listener on body for tictactoe moves
-body.addEventListener('click', function tictactoe (event) {
+// Event listener on reset button
+reset.addEventListener('click', resetBoard)
+
+// function to reset the game
+function resetBoard () {
+  player = true
+  moves = 1
+  winner = ''
+  updateTitle()
+  tiles.forEach(tile => tile.textContent = '')
+  reset.classList.add('hidden')
+  body.addEventListener('click', tictactoe)
+}
+
+function tictactoe (event) {
   var tile = event.target
   if (tile.className !== 'tile') return
   if (tile.textContent) return
-  player ? tile.textContent = 'X' : tile.textContent = 'O'
+  tile.textContent = player ? 'X' : 'O'
   // find winner by checking tiles for 'X' and 'O'
   findWinner()
   if (winner) {
     title.textContent = winner + ' wins!'
     body.removeEventListener('click', tictactoe)
     reset.classList.remove('hidden')
+  } else if (moves === 9) {
+    // it's a tie
+    title.textContent = 'It\'s a tie!'
   } else {
-    if (moves === 9) {
-      // it's a tie
-      title.textContent = 'It\'s a tie!'
-    } else {
-      moves = moves + 1
-      changePlayer()
-    }
+    moves = moves + 1
+    player = !player
+    updateTitle()
   }
-})
-// Event listener on reset button
-reset.addEventListener('click', function () {
-  resetBoard()
-})
-
-// function to change player and update the turn in title bar
-function changePlayer () {
-  player = !player
-  updateTitle()
 }
 
 function findWinner () {
@@ -62,18 +64,6 @@ function checkTiles (a, b, c) {
       return a.textContent
     }
   }
-}
-
-// function to reset the game
-function resetBoard () {
-  player = true
-  moves = 1
-  winner = ''
-  updateTitle()
-  tiles.forEach(function (tile) {
-    tile.textContent = ''
-  })
-  reset.classList.add('hidden')
 }
 
 function updateTitle () {
