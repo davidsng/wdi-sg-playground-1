@@ -12,7 +12,7 @@ body.addEventListener('click', function tictactoe (event) {
   var tile = event.target
   if (tile.className !== 'tile') return
   if (tile.textContent) return
-  player ? mark(tile, 'X') : mark(tile, 'O')
+  player ? tile.textContent = 'X' : tile.textContent = 'O'
   // find winner by checking tiles for 'X' and 'O'
   findWinner()
   if (winner) {
@@ -34,10 +34,6 @@ reset.addEventListener('click', function () {
   resetBoard()
 })
 
-// function to mark 'X'/'O' when a tile is clicked
-function mark (tile, mark) {
-  tile.textContent = mark
-}
 // function to change player and update the turn in title bar
 function changePlayer () {
   player = !player
