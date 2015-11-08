@@ -15,7 +15,7 @@ function resetBoard () {
   player = true
   moves = 1
   winner = ''
-  updateTitle()
+  title.textContent = player ? 'X\'s turn' : 'O\'s turn'
   tiles.forEach(tile => tile.textContent = '')
   reset.classList.add('hidden')
   body.addEventListener('click', tictactoe)
@@ -27,7 +27,7 @@ function tictactoe (event) {
   if (tile.textContent) return
   tile.textContent = player ? 'X' : 'O'
   // find winner by checking tiles for 'X' and 'O'
-  findWinner()
+  winner = findWinner()
   if (winner) {
     title.textContent = winner + ' wins!'
     body.removeEventListener('click', tictactoe)
@@ -38,7 +38,7 @@ function tictactoe (event) {
   } else {
     moves = moves + 1
     player = !player
-    updateTitle()
+    title.textContent = player ? 'X\'s turn' : 'O\'s turn'
   }
 }
 
@@ -50,22 +50,14 @@ function findWinner () {
   var winningCombination = [ [0, 1, 2], [3, 4, 5], [6, 7, 8],
                              [0, 3, 6], [1, 4, 7], [2, 5, 8],
                              [0, 4, 8], [2, 4, 6]]
-  winningCombination.forEach(function (combo) {
-    if (!winner) {
-      winner = checkTiles(tiles[combo[0]], tiles[combo[1]], tiles[combo[2]])
-    }
-  })
-}
 
-// function to check whether 3 tiles contain the same mark
-function checkTiles (a, b, c) {
-  if (a.textContent && b.textContent && c.textContent) {
-    if ((a.textContent === b.textContent) && (a.textContent === c.textContent)) {
-      return a.textContent
-    }
+  if (winningCombination.some(combo =>
+    combo.every(tileIndex =>
+      tiles[tileIndex].textContent === 'X'))) {
+        return 'X'
+  } else if (winningCombination.some(combo =>
+    combo.every(tileIndex =>
+      tiles[tileIndex].textContent === 'O'))) {
+        return 'O'
   }
-}
-
-function updateTitle () {
-  player ? title.textContent = 'X\'s turn' : title.textContent = 'O\'s turn'
 }
