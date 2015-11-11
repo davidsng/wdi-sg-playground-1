@@ -53,11 +53,8 @@ function findWinner () {
 
   if (winningCombination.some(combo =>
     combo.every(tileIndex =>
-      tiles[tileIndex].textContent === 'X'))) {
-        return 'X'
-  } else if (winningCombination.some(combo =>
+      tiles[tileIndex].textContent === 'X'))) return 'X'
+  else if (winningCombination.some(combo =>
     combo.every(tileIndex =>
-      tiles[tileIndex].textContent === 'O'))) {
-        return 'O'
-  }
+      tiles[tileIndex].textContent === 'O'))) return 'O'
 }
